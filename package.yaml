@@ -1,0 +1,23 @@
+name: iceclash
+
+dependencies:
+  - base >= 4.12 && < 5
+  - clash-lib
+  - clash-prelude >=1
+  - ghc-typelits-natnormalise
+  - ghc-typelits-extra
+  - ghc-typelits-knownnat
+  - template-haskell
+
+build-tools:
+  - clash-ghc
+
+ghc-options:
+  - -fplugin=GHC.TypeLits.Normalise
+  - -fplugin=GHC.TypeLits.Extra.Solver
+  - -fplugin=GHC.TypeLits.KnownNat.Solver
+
+library:
+  source-dirs: src
+  dependencies:
+    - clash-utils
