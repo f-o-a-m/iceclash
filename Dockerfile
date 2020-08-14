@@ -20,9 +20,18 @@ RUN git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
 WORKDIR arachne-pnr
 RUN make -j$(nproc) install
 WORKDIR /usr/src/temp
-RUN git clone https://github.com/YosysHQ/nextpnr nextpnr
-WORKDIR nextpnr
+RUN git clone --recursive https://github.com/YosysHQ/prjtrellis
+WORKDIR prjtrellis/libtrellis
+RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DTRELLIS_INSTALL_PREFIX=/usr/local .
+RUN make -j$(nproc) install
+WORKDIR /usr/src/temp
+RUN git clone https://github.com/YosysHQ/nextpnr nextpnr-ice40
+RUN git clone https://github.com/YosysHQ/nextpnr nextpnr-ecp5
+WORKDIR nextpnr-ice40
 RUN cmake -DARCH=ice40 -DBUILD_GUI=OFF -DCMAKE_INSTALL_PREFIX=/usr/local .
+RUN make -j$(nproc) install
+WORKDIR /usr/src/temp/nextpnr-ecp5
+RUN cmake -DARCH=ecp5 -DBUILD_GUI=OFF -DCMAKE_INSTALL_PREFIX=/usr/local .
 RUN make -j$(nproc) install
 WORKDIR /usr/src/temp
 RUN git clone https://github.com/cliffordwolf/yosys.git yosys
